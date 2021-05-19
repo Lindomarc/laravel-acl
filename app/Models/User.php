@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 
 
@@ -42,4 +43,31 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function setIdAttribute($value)
+    {
+        if ($value) {
+            $this->attributes['id'] = $value;
+        }
+    }
+    public function setNameAttribute($value)
+    {
+        if ($value) {
+            $this->attributes['name'] = trim($value);
+        }
+    }
+
+    public function setEmailAttribute($value)
+    {
+        if (filter_var($value,FILTER_VALIDATE_EMAIL)) {
+            $this->attributes['email'] = trim($value);
+        }
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        if ($value) {
+            $this->attributes['password'] = Hash::make($value);
+        }
+    }
+
 }
