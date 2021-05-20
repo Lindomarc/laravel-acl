@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RoleRequest;
-use Spatie\Permission\Models\Role;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
-class RoleController extends Controller
+class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +14,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        $permissions = Permission::all();
 
-        return view('roles.index',[
-            'roles' => $roles
+        return view('permissions.index',[
+            'permissions' => $permissions
         ]);
     }
 
@@ -28,7 +28,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('roles.create');
+        return view('permissions.create');
     }
 
     /**
@@ -37,10 +37,10 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(RoleRequest $request)
+    public function store(Request $request)
     {
-        $role = Role::create($request->all());
-        return redirect()->route('role.edit',$role->id);
+        $permission = Permission::create($request->all());
+        return redirect()->route('permission.edit',$permission->id);
     }
 
     /**
@@ -62,11 +62,9 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-
-        $role = Role::findById($id);
-
-        return view('roles.edit',[
-            'role' => $role
+        $permission = Permission::findById($id);
+        return view('permissions.edit',[
+            'permission' => $permission
         ]);
     }
 
@@ -77,13 +75,12 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(RoleRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $role = Role::findById($id);
-        $role->fill($request->all());
-        $role->save();
-        return redirect()->route('role.edit',$role->id);
-
+        $permission = Permission::findById($id);
+        $permission->fill($request->all());
+        $permission->save();
+        return redirect()->route('permission.edit',$permission->id);
     }
 
     /**
@@ -94,9 +91,8 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $role = Role::findById($id);
-        $role->delete();
-        return redirect()->route('role.index');
-
+        $permission = Permission::findById($id);
+        $permission->delete();
+        return redirect()->route('permission.index');
     }
 }
