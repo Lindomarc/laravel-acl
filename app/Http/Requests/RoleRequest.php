@@ -24,9 +24,9 @@ class RoleRequest extends FormRequest
      */
     public function rules()
     {
+        $isEdit =(isset($this->request->all()['id'])) ?(','.$this->request->all()['id']) : '';
         return [
-            'name' => 'required|unique:roles'
+            'name' => 'required|unique:roles,name'.$isEdit
         ];
     }
 }
-//'email' => 'required|email|unique:users,email'.$isEdit,
