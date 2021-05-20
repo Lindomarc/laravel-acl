@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
@@ -96,5 +97,47 @@ class UserController extends Controller
         $user = User::where('id',$id)->first();
         $user->delete();
         return redirect()->route('user.index');
+    }
+
+
+    public function permissions($id)
+    {
+        $permissions = Permission::all();
+        $user = User::where('id',$id)->first();
+
+        if ($permissions) {
+
+            foreach ($permissions as  $permission){
+                $permission->can = $user->hasPermissionTo($permission->name);
+            }
+        }
+
+        return view('users.permissions',[
+            'permissions' => $permissions,
+            'user' => $user
+        ]);
+    }
+
+    public function permissionsSync(Request $request,$user_id)
+    {
+        $permissionsRequest = $request->except('_token','_method');
+
+        if ($permissionsRequest) {
+            foreach ($permissionsRequest as $key => $value){
+                $permissions[] = Permission::findById($key);
+            }
+        }
+
+        $user = User::where('id',$user_id)->first();
+
+        if (!empty($permissions)) {
+            $user->syncPermissions($permissions);
+        }else {
+            $user->syncPermissions(null);
+        }
+
+        return redirect()->route('user.permissions',[
+            'user' => $user->id
+        ]);
     }
 }
