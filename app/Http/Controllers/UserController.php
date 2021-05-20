@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -96,5 +97,46 @@ class UserController extends Controller
         $user = User::where('id',$id)->first();
         $user->delete();
         return redirect()->route('user.index');
+    }
+
+
+    public function roles($id)
+    {
+        $roles = Role::all();
+        $user = User::where('id',$id)->first();
+
+        if ($roles) {
+            foreach ($roles as  $role){
+
+                $role->can = $user->hasRole($role->name);
+            }
+        }
+
+        return view('users.roles',[
+            'roles' => $roles,
+            'user' => $user
+        ]);
+    }
+
+    public function rolesSync(Request $request,$user_id)
+    {
+        $rolesRequest = $request->except('_token','_method');
+        if ($rolesRequest) {
+            foreach ($rolesRequest as $key => $value){
+                $roles[] = Role::findById($key);
+            }
+        }
+
+        $user = User::where('id',$user_id)->first();
+
+        if (!empty($roles)) {
+            $user->syncRoles($roles);
+        }else {
+            $user->syncRoles(null);
+        }
+
+        return redirect()->route('user.roles',[
+            'user' => $user->id
+        ]);
     }
 }

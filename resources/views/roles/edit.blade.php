@@ -22,6 +22,8 @@
                         <form action="{{ route('role.update', $role->id, false) }}" method="post" class="mt-4" autocomplete="off">
                             @csrf
                             @method('put')
+                            <input type="hidden" name="id" value="{{ $role->id }}">
+
                             <div class="form-group">
                                 <label for="name">Role Name:</label>
                                 <input type="text" class="form-control" id="name" placeholder="Enter the role name"

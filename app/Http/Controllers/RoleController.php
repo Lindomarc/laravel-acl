@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
@@ -98,5 +100,43 @@ class RoleController extends Controller
         $role->delete();
         return redirect()->route('role.index');
 
+    }
+
+    public function permissions($id)
+    {
+        $permissions = Permission::all();
+        $role = Role::findById($id);
+
+        foreach ($permissions as  $permission){
+            $permission->can = $role->hasPermissionTo($permission->name);
+        }
+
+        return view('roles.permissions',[
+            'permissions' => $permissions,
+            'role' => $role
+        ]);
+    }
+
+    public function permissionsSync(Request $request,$role_id)
+    {
+        $permissionsRequest = $request->except('_token','_method');
+
+        if ($permissionsRequest) {
+            foreach ($permissionsRequest as $key => $value){
+                $permissions[] = Permission::findById($key);
+            }
+        }
+
+        $role = Role::findById($role_id);
+
+        if (!empty($permissions)) {
+            $role->syncPermissions($permissions);
+        }else {
+            $role->syncPermissions(null);
+        }
+
+        return redirect()->route('role.permissions',[
+            'role' => $role->id
+        ]);
     }
 }
