@@ -19,19 +19,19 @@
                             @endforeach
                         @endif
 
-                        <h2 class="mt-4">Permissions to {{ $user->name }}</h2>
+                        <h2 class="mt-4">Roles to {{ $user->name }}</h2>
 
-                        <form action="{{ route('user.permissionsSync',$user->id, false) }}" method="post" class="mt-4" autocomplete="off">
+                        <form action="{{ route('user.rolesSync',$user->id, false) }}" method="post" class="mt-4" autocomplete="off">
                             @csrf
                             @method('PUT')
 
-                            @foreach($permissions as $permission)
+                            @foreach($roles as $role)
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input"
-                                        id="{{ "{$permission->name}-{$permission->id}" }}" name="{{ $permission->id }}"
-                                        {{ $permission->can?'checked':''  }}
+                                        id="{{ "{$role->name}-{$role->id}" }}" name="{{ $role->id }}"
+                                        {{ $role->can?'checked':''  }}
                                     >
-                                    <label class="custom-control-label" for="{{ "{$permission->name}-{$permission->id}" }}">{{ $permission->name }}</label>
+                                    <label class="custom-control-label" for="{{ "{$role->name}-{$role->id}" }}">{{ $role->name }}</label>
                                 </div>
                             @endforeach
 

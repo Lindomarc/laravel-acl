@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -100,43 +100,42 @@ class UserController extends Controller
     }
 
 
-    public function permissions($id)
+    public function roles($id)
     {
-        $permissions = Permission::all();
+        $roles = Role::all();
         $user = User::where('id',$id)->first();
 
-        if ($permissions) {
+        if ($roles) {
+            foreach ($roles as  $role){
 
-            foreach ($permissions as  $permission){
-                $permission->can = $user->hasPermissionTo($permission->name);
+                $role->can = $user->hasRole($role->name);
             }
         }
 
-        return view('users.permissions',[
-            'permissions' => $permissions,
+        return view('users.roles',[
+            'roles' => $roles,
             'user' => $user
         ]);
     }
 
-    public function permissionsSync(Request $request,$user_id)
+    public function rolesSync(Request $request,$user_id)
     {
-        $permissionsRequest = $request->except('_token','_method');
-
-        if ($permissionsRequest) {
-            foreach ($permissionsRequest as $key => $value){
-                $permissions[] = Permission::findById($key);
+        $rolesRequest = $request->except('_token','_method');
+        if ($rolesRequest) {
+            foreach ($rolesRequest as $key => $value){
+                $roles[] = Role::findById($key);
             }
         }
 
         $user = User::where('id',$user_id)->first();
 
-        if (!empty($permissions)) {
-            $user->syncPermissions($permissions);
+        if (!empty($roles)) {
+            $user->syncRoles($roles);
         }else {
-            $user->syncPermissions(null);
+            $user->syncRoles(null);
         }
 
-        return redirect()->route('user.permissions',[
+        return redirect()->route('user.roles',[
             'user' => $user->id
         ]);
     }
