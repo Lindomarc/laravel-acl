@@ -94,6 +94,5 @@ class PermissionController extends Controller
         $permission = Permission::findById($id);
         $permission->delete();
         return redirect()->route('permission.index');
-
     }
 }
