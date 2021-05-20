@@ -61,6 +61,12 @@
                                     <a class="dropdown-item" href="{{ route('user.index') }}">
                                         Users Manager
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('role.index') }}">
+                                        Roles Manager
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('permission.index') }}">
+                                        Permissions Manager
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
