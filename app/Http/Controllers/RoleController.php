@@ -106,6 +106,11 @@ class RoleController extends Controller
     {
         $permissions = Permission::all();
         $role = Role::findById($id);
+
+        foreach ($permissions as  $permission){
+            $permission->can = $role->hasPermissionTo($permission->name);
+        }
+
         return view('roles.permissions',[
             'permissions' => $permissions,
             'role' => $role
@@ -129,7 +134,7 @@ class RoleController extends Controller
         }else {
             $role->syncPermissions(null);
         }
-        
+
         return redirect()->route('role.permissions',[
             'role' => $role->id
         ]);
