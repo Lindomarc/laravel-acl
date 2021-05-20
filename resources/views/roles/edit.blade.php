@@ -19,13 +19,13 @@
                             @endforeach
                         @endif
 
-                        <form action="{{ route('role.store', null, false) }}" method="post" class="mt-4" autocomplete="off">
+                        <form action="{{ route('role.update', $role->id, false) }}" method="post" class="mt-4" autocomplete="off">
                             @csrf
-
+                            @method('put')
                             <div class="form-group">
                                 <label for="name">Role Name:</label>
                                 <input type="text" class="form-control" id="name" placeholder="Enter the role name"
-                                       name="name" value="{{ old('name') }}">
+                                       name="name" value="{{ old('name')??$role->name }}">
                             </div>
                             <button type="submit" class="btn btn-block btn-success">Save</button>
                         </form>
