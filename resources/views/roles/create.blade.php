@@ -9,7 +9,7 @@
 
                     <div class="card-body">
 
-                        <a class="text-success" href="{{ route('role.index') }}">&leftarrow; Back to List</a>
+                        <a class="text-success" href="{{ route('role.index') }}">&leftarrow; Back to List Roles</a>
 
                         @if($errors)
                             @foreach($errors->all() as $error)
@@ -23,16 +23,10 @@
                             @csrf
 
                             <div class="form-group">
-                                <label for="name">Name:</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter the name"
+                                <label for="name">Role Name:</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter the role name"
                                        name="name" value="{{ old('name') }}">
                             </div>
-                            <div class="form-group">
-                                <label for="guard_name">Name:</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter the guard name"
-                                       name="guard_name" value="{{ old('guard_name') }}">
-                            </div>
-
                             <button type="submit" class="btn btn-block btn-success">Save</button>
                         </form>
                     </div>
