@@ -8,6 +8,7 @@
     use App\Models\Post;
     use Illuminate\Http\Request;
     use Illuminate\Http\Response;
+    use Spatie\Permission\Exceptions\UnauthorizedException;
 
 
     class PostController extends Controller
@@ -33,6 +34,10 @@
          */
         public function create()
         {
+            if (!auth()->user()->hasPermissionTo('Register')) {
+                throw new UnauthorizedException('403','Custom Message');
+            }
+
             return view('posts.create');
         }
 
@@ -44,6 +49,10 @@
          */
         public function store(PostRequest $request)
         {
+            if (!auth()->user()->hasPermissionTo('Register')) {
+                throw new UnauthorizedException('403','Custom Message');
+            }
+            
             $post = new Post();
             $post->title = $request->title;
             $post->text = $request->text;

@@ -46,9 +46,7 @@
         'role_or_permission:Consult'
     ]);
 
-    Route::get('/post/create', [PostController::class, 'create'])->name('post.create')->middleware([
-        'role:Admin'
-    ]);
+    Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
 
     Route::post('/post', [PostController::class, 'store'])->name('post.store')
         ->middleware([
