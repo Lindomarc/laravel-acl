@@ -52,7 +52,7 @@
             if (!auth()->user()->hasPermissionTo('Register')) {
                 throw new UnauthorizedException('403','Custom Message');
             }
-            
+
             $post = new Post();
             $post->title = $request->title;
             $post->text = $request->text;

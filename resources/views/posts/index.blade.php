@@ -8,9 +8,9 @@
                     <div class="card-header">Dashboard</div>
 
                     <div class="card-body">
-
-                        <a class="text-success" href="{{ route('post.create') }}">&plus; Register an article</a>
-
+                        @can('Register')
+                            <a class="text-success" href="{{ route('post.create') }}">&plus; Register an article</a>
+                        @endcan
                         @if($errors)
                             @foreach($errors->all() as $error)
                                 <div class="alert alert-danger mt-4" role="alert">
