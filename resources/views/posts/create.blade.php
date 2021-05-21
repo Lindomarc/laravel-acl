@@ -9,8 +9,9 @@
 
                     <div class="card-body">
 
+                        @can('Consult')
                         <a class="text-success" href="{{ route('post.index') }}">&leftarrow; Back to list</a>
-
+                        @endcan
                         @if($errors)
                             @foreach($errors->all() as $error)
                                 <div class="alert alert-danger mt-4" role="alert">

@@ -36,12 +36,16 @@
                                     <td>{{ $post->title }}</td>
                                     <td>{{ ($post->published == true ? 'Published' : 'draft') }}</td>
                                     <td class="d-flex">
-                                        <a class="mr-3 btn btn-sm btn-outline-success" href="{{ route('post.edit', ['post' => $post->id]) }}">Edit</a>
-                                        <form action="{{ route('post.destroy', ['post' => $post->id]) }}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <input class="btn btn-sm btn-outline-danger" type="submit" value="Remover">
-                                        </form>
+                                        @can('Edit')
+                                            <a class="mr-3 btn btn-sm btn-outline-success" href="{{ route('post.edit', ['post' => $post->id]) }}">Edit</a>
+                                        @endcan
+                                        @can('Remover')
+                                            <form action="{{ route('post.destroy', ['post' => $post->id]) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <input class="btn btn-sm btn-outline-danger" type="submit" value="Remover">
+                                            </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach
