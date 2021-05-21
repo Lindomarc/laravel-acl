@@ -1,9 +1,9 @@
 <?php
 
     use App\Http\Controllers\PermissionController;
+    use App\Http\Controllers\PostController;
     use App\Http\Controllers\RoleController;
     use App\Http\Controllers\UserController;
-    use App\Http\Controllers\PostController;
     use Illuminate\Support\Facades\Route;
 
     /*
@@ -42,13 +42,37 @@
      *
      */
 
-    Route::get('/post', [PostController::class,'index'])->name('post.index');
+    Route::get('post', [PostController::class, 'index'])->name('post.index')->middleware([
+        'role_or_permission:Consult'
+    ]);
 
-    Route::get('/post/create', [PostController::class,'create'])->name('post.create');
-    Route::post('/post', [PostController::class,'store'])->name('post.store');
+    Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
 
-    Route::match(['put', 'patch'], '/post/{post}', [PostController::class,'update'])->name('post.update');
+    Route::post('/post', [PostController::class, 'store'])->name('post.store')
+        ->middleware([
+            'role:Admin'
+        ]);
 
-    Route::get('/post/{post}',  [PostController::class,'show'])->name('post.show');
-    Route::delete('/post/{post}', [PostController::class,'destroy'])->name('post.destroy');
-    Route::get('/post/{post}/edit', [PostController::class,'edit'])->name('post.edit');
+    Route::match(['put', 'patch'], '/post/{post}', [PostController::class, 'update'])
+        ->name('post.update')
+        ->middleware([
+            'role:Admin'
+        ]);
+
+    Route::get('/post/{post}', [PostController::class, 'show'])
+        ->name('post.show')
+        ->middleware([
+            'role:Admin'
+        ]);
+
+    Route::delete('/post/{post}', [PostController::class, 'destroy'])
+        ->name('post.destroy')
+        ->middleware([
+            'role:Admin'
+        ]);
+
+    Route::get('/post/{post}/edit', [PostController::class, 'edit'])
+        ->name('post.edit')
+        ->middleware([
+            'role:Admin'
+        ]);

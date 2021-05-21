@@ -8,9 +8,9 @@
                     <div class="card-header">Dashboard</div>
 
                     <div class="card-body">
-
-                        <a class="text-success" href="{{ route('post.create') }}">&plus; Register an article</a>
-
+                        @can('Register')
+                            <a class="text-success" href="{{ route('post.create') }}">&plus; Register an article</a>
+                        @endcan
                         @if($errors)
                             @foreach($errors->all() as $error)
                                 <div class="alert alert-danger mt-4" role="alert">
@@ -36,12 +36,16 @@
                                     <td>{{ $post->title }}</td>
                                     <td>{{ ($post->published == true ? 'Published' : 'draft') }}</td>
                                     <td class="d-flex">
-                                        <a class="mr-3 btn btn-sm btn-outline-success" href="{{ route('post.edit', ['post' => $post->id]) }}">Edit</a>
-                                        <form action="{{ route('post.destroy', ['post' => $post->id]) }}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <input class="btn btn-sm btn-outline-danger" type="submit" value="Remover">
-                                        </form>
+                                        @can('Edit')
+                                            <a class="mr-3 btn btn-sm btn-outline-success" href="{{ route('post.edit', ['post' => $post->id]) }}">Edit</a>
+                                        @endcan
+                                        @can('Delete')
+                                            <form action="{{ route('post.destroy', ['post' => $post->id]) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <input class="btn btn-sm btn-outline-danger" type="submit" value="Delete">
+                                            </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach
