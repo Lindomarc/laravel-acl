@@ -6,7 +6,6 @@
 
     use App\Http\Requests\PostRequest;
     use App\Models\Post;
-    use Illuminate\Http\Request;
     use Illuminate\Http\Response;
     use Spatie\Permission\Exceptions\UnauthorizedException;
 
@@ -20,6 +19,9 @@
          */
         public function index()
         {
+            if (!auth()->user()->hasPermissionTo('Consult')) {
+                throw new UnauthorizedException('403', 'Custom Message');
+            }
             $posts = Post::all();
 
             return view('posts.index', [
@@ -87,6 +89,9 @@
          */
         public function edit(Post $post)
         {
+            if (!auth()->user()->hasPermissionTo('Edit')) {
+                throw new UnauthorizedException('403', 'Custom Message');
+            }
             return view('posts.edit', [
                 'post' => $post
             ]);
@@ -101,6 +106,9 @@
          */
         public function update(PostRequest $request, Post $post)
         {
+            if (!auth()->user()->hasPermissionTo('Edit')) {
+                throw new UnauthorizedException('403', 'Custom Message');
+            }
             $post->title = $request->title;
             $post->text = $request->text;
 
@@ -122,6 +130,9 @@
          */
         public function destroy(Post $post)
         {
+            if (!auth()->user()->hasPermissionTo('Delete')) {
+                throw new UnauthorizedException('403', 'Custom Message');
+            }
             $post->delete();
             return redirect()->route('post.index');
         }

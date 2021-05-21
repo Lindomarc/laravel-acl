@@ -39,11 +39,11 @@
                                         @can('Edit')
                                             <a class="mr-3 btn btn-sm btn-outline-success" href="{{ route('post.edit', ['post' => $post->id]) }}">Edit</a>
                                         @endcan
-                                        @can('Remover')
+                                        @can('Delete')
                                             <form action="{{ route('post.destroy', ['post' => $post->id]) }}" method="post">
                                                 @csrf
                                                 @method('delete')
-                                                <input class="btn btn-sm btn-outline-danger" type="submit" value="Remover">
+                                                <input class="btn btn-sm btn-outline-danger" type="submit" value="Delete">
                                             </form>
                                         @endcan
                                     </td>
